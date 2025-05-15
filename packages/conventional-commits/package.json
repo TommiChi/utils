@@ -1,0 +1,21 @@
+{
+  "name": "@tcncode/conventional-commits",
+  "version": "0.2.0",
+  "description": "Utility to facilitate the generation of conventional commits.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "enquirer": "^2.4.1"
+  }
+}
