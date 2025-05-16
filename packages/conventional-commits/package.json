@@ -1,6 +1,6 @@
 {
   "name": "@tcncode/conventional-commits",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Utility to facilitate the generation of conventional commits.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,6 +16,11 @@
     "access": "public"
   },
   "devDependencies": {
-    "enquirer": "^2.4.1"
+    "@types/yargs": "^17.0.33",
+    "enquirer": "^2.4.1",
+    "yargs": "^17.7.2"
+  },
+  "bin": {
+    "conventional-commit": "./cli.js"
   }
 }
