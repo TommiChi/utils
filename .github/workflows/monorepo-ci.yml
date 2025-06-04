@@ -3,11 +3,11 @@ name: Monorepo CI
 on:
   push:
     paths:
-      # - 'packages/**'
+      - 'packages/**'
       - '!**/README.md'
   pull_request:
     paths:
-      # - 'packages/**'
+      - 'packages/**'
       - '!**/README.md'
 
 env:

@@ -79,7 +79,12 @@ const terminal = (command = ''): Promise<string> => {
 
 export async function conventionalCommit() {
   const answers: ConventionalAnswers = await prompt(questions);
-  const commit = `${commitTypes[answers.commitType]}${answers.commitType}(${answers.package}|${answers.feature}): ${answers.commitMessage}`;
+
+  let feature = (answers.package ?? '').trim() !== '' && (answers.feature ?? '').trim() !== '' ? `${answers.package} | ${answers.feature}` : answers.package || answers.feature;
+
+  feature = feature ? `(${feature})` : '';
+  
+  const commit = `${commitTypes[answers.commitType]}${answers.commitType}${feature}: ${answers.commitMessage}`;
 
   try {
     const output = await terminal('git diff --cached').catch(() => Promise.resolve(null));
@@ -87,6 +92,6 @@ export async function conventionalCommit() {
     const result = await terminal(`git commit -m "${commit}"`);
     console.log(result);
   } catch(err) {
-    console.error('/!\\ ERROR /!\\\n', err, '/!\\ COMMIT MESSAGE /!\\\n', commit, '\n==========================================');
+    console.error('/!\\ ERROR /!\\\n', err, '\n/!\\ COMMIT MESSAGE /!\\\n', commit, '\n==========================================');
   }
 }
