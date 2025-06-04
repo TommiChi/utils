@@ -31,6 +31,13 @@ jobs:
             external_promises:
               - 'packages/external-promises/**'
 
+  dummy-section:
+    needs: filter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dummy step to ensure the workflow runs
+        run: echo needs.filter.outputs.conventional_commits " and " needs.filter.outputs.external_promises
+        
   test-conventional-commits:
     needs: filter
     if: needs.filter.outputs.conventional_commits == 'true'
@@ -49,6 +56,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
-        run: cd packages/external-promises && npm install
+        run: npm install && cd packages/external-promises && npm install
       - name: Run tests
         run: cd packages/external-promises && npm test

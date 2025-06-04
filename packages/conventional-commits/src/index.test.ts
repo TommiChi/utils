@@ -61,4 +61,3 @@ describe('conventionalCommit', () => {
     errorSpy.mockRestore();
   });
 });
-
