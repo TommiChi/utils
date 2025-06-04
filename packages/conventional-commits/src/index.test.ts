@@ -57,8 +57,9 @@ describe('conventionalCommit', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     await conventionalCommit();
     const err = new Error('commit failed');
-    expect(errorSpy).toHaveBeenCalledWith('/!\\ ERROR /!\\\n', err, '\n/!\\ COMMIT MESSAGE /!\\\n', '🐛fix(external-promises | bug): fix bug', '\n==========================================');
+    expect(errorSpy).toHaveBeenCalledWith('/!\\ ERROR /!\\\n', err, '/!\\ COMMIT MESSAGE /!\\\n', '🐛fix(external-promises|bug): fix bug', '\n==========================================');
     errorSpy.mockRestore();
   });
 });
+
 

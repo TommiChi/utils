@@ -25,6 +25,7 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          list-files: 'true'
           filters: |
             conventional_commits:
               - 'packages/conventional-commits/**'
