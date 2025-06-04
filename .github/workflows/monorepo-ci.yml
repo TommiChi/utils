@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
-        run: cd packages/conventional-commits && npm install
+        run: npm install && cd packages/conventional-commits && npm install
       - name: Run tests
         run: cd packages/conventional-commits && npm run test
 
