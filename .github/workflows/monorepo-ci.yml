@@ -36,8 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dummy step to ensure the workflow runs
-        run: echo needs.filter.outputs.conventional_commits " and " needs.filter.outputs.external_promises
-        
+        run: echo "${{ needs.filter.outputs.conventional_commits }} and ${{ needs.filter.outputs.external_promises }}"
+
   test-conventional-commits:
     needs: filter
     if: needs.filter.outputs.conventional_commits == 'true'
