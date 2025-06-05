@@ -27,6 +27,8 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          base: HEAD^
+          ref: ${{ github.sha }}
           list-files: 'csv'
           filters: |
             conventional_commits:
