@@ -48,7 +48,7 @@ jobs:
 
   publish-conventional-commits:
     needs: test-conventional-commits
-    if: needs.test-conventional-commits.result == 'success'
+    if: github.ref == 'refs/heads/main' && needs.test-conventional-commits.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +63,7 @@ jobs:
         run: cd packages/conventional-commits && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+          
   test-external-promises:
     needs: filter
     if: needs.filter.outputs.external_promises == 'true'
