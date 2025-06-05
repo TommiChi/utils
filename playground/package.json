@@ -1,0 +1,19 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "demo.ts",
+  "scripts": {
+    "commit": "ts-node --esm ./demo.ts",
+    "cli": "npx conventional-commit"
+  },
+  "dependencies": {
+    "@tcncode/external-promises": "../packages/external-promises",
+    "@tcncode/conventional-commits": "../packages/conventional-commits"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

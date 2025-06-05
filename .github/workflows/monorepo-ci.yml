@@ -1,0 +1,76 @@
+name: Monorepo CI
+
+on:
+  push:
+    paths:
+      - 'packages/**'
+      - '!**/README.md'
+  pull_request:
+    paths:
+      - 'packages/**'
+      - '!**/README.md'
+
+env:
+  CI: true
+  NPM_CONFIG_LOGLEVEL: verbose
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      conventional_commits: ${{ steps.filter.outputs.conventional_commits }}
+      external_promises: ${{ steps.filter.outputs.external_promises }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: ${{ github.event_name == 'push' && github.event.before || github.event.pull_request.base.sha }}
+          ref: ${{ github.sha }}
+          list-files: 'csv'
+          filters: |
+            conventional_commits:
+              - 'packages/conventional-commits/**'
+            external_promises:
+              - 'packages/external-promises/**'
+  test-conventional-commits:
+    needs: filter
+    if: needs.filter.outputs.conventional_commits == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install && cd packages/conventional-commits && npm install
+      - name: Run tests
+        run: cd packages/conventional-commits && npm run test
+
+  publish-conventional-commits:
+    needs: test-conventional-commits
+    if: github.ref == 'refs/heads/main' && needs.test-conventional-commits.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+      - name: Install dependencies
+        run: npm install && cd packages/conventional-commits && npm install
+      - name: Publish to npm
+        run: cd packages/conventional-commits && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+  test-external-promises:
+    needs: filter
+    if: needs.filter.outputs.external_promises == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install && cd packages/external-promises && npm install
+      - name: Run tests
+        run: cd packages/external-promises && npm test
