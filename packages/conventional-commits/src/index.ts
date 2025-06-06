@@ -29,6 +29,7 @@ const commitTypes = {
   revert: '🗑',
   style: '💎',
   test: '🚨',
+  debug: '🐞',
 };
 
 const questions: ConventionalQuestion[] = [
@@ -48,6 +49,7 @@ const questions: ConventionalQuestion[] = [
       'ci',
       'chore',
       'revert',
+      'debug',
     ],
   },
   {
