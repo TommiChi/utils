@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_type:
-        description: 'Enter a release type (major, minor, patch)'
+        description: 'Enter the filter name and a release type (-major, -minor, -patch)'
         required: false
         default: ''
   push:
@@ -54,7 +54,6 @@ jobs:
         run: cd packages/conventional-commits && npm run test
 
   publish-conventional-commits:
-    needs: test-conventional-commits
     if: github.ref == 'refs/heads/main' && contains(github.event.inputs.publish_type, 'conventional-commits-')
     runs-on: ubuntu-latest
     steps:
