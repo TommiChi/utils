@@ -1,6 +1,12 @@
 name: Monorepo CI
 
 on:
+  workflow_dispatch:
+    inputs:
+      publish_type:
+        description: 'Enter a release type (major, minor, patch)'
+        required: false
+        default: ''
   push:
     paths:
       - 'packages/**'
@@ -16,6 +22,7 @@ env:
 
 jobs:
   filter:
+    if: github.event.inputs.publish_type == ''
     runs-on: ubuntu-latest
     outputs:
       conventional_commits: ${{ steps.filter.outputs.conventional_commits }}
@@ -48,7 +55,7 @@ jobs:
 
   publish-conventional-commits:
     needs: test-conventional-commits
-    if: github.ref == 'refs/heads/main' && needs.test-conventional-commits.result == 'success'
+    if: github.ref == 'refs/heads/main' && contains(github.event.inputs.publish_type, 'conventional-commits-')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -60,13 +67,13 @@ jobs:
       - name: Install dependencies
         run: npm install && cd packages/conventional-commits && npm install && npm run build
       - name: Publish major to npm
-        if: contains(github.event.head_commit.message, '[major]')
+        if: contains(github.event.inputs.publish_type, 'major')
         run: cd packages/conventional-commits && npm version major && npm publish --access public
       - name: Publish minor to npm
-        if: contains(github.event.head_commit.message, '[minor]')
+        if: contains(github.event.inputs.publish_type, 'minor')
         run: cd packages/conventional-commits && npm version minor && npm publish --access public
       - name: Publish patch to npm
-        if: contains(github.event.head_commit.message, '[patch]')
+        if: contains(github.event.inputs.publish_type, 'patch')
         run: cd packages/conventional-commits && npm version patch && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
