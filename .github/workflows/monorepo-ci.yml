@@ -1,12 +1,6 @@
 name: Monorepo CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      publish_type:
-        description: 'Enter the filter name and a release type (-major, -minor, -patch)'
-        required: false
-        default: ''
   push:
     paths:
       - 'packages/**'
@@ -53,30 +47,6 @@ jobs:
       - name: Run tests
         run: cd packages/conventional-commits && npm run test
 
-  publish-conventional-commits:
-    if: github.ref == 'refs/heads/main' && contains(github.event.inputs.publish_type, 'conventional-commits-')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org/'
-      - name: Install dependencies
-        run: npm install && cd packages/conventional-commits && npm install && npm run build
-      - name: Publish major to npm
-        if: contains(github.event.inputs.publish_type, 'major')
-        run: cd packages/conventional-commits && npm version major && npm publish --access public
-      - name: Publish minor to npm
-        if: contains(github.event.inputs.publish_type, 'minor')
-        run: cd packages/conventional-commits && npm version minor && npm publish --access public
-      - name: Publish patch to npm
-        if: contains(github.event.inputs.publish_type, 'patch')
-        run: cd packages/conventional-commits && npm version patch && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
   test-external-promises:
     needs: filter
     if: needs.filter.outputs.external_promises == 'true'
