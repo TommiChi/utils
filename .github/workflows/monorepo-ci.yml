@@ -59,8 +59,15 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
       - name: Install dependencies
         run: npm install && cd packages/conventional-commits && npm install && npm run build
-      - name: Publish to npm
-        run: cd packages/conventional-commits && npm run build && npm publish --access public
+      - name: Publish major to npm
+        if: contains(github.event.head_commit.message, '[major]')
+        run: cd packages/conventional-commits && npm version major && npm publish --access public
+      - name: Publish minor to npm
+        if: contains(github.event.head_commit.message, '[minor]')
+        run: cd packages/conventional-commits && npm version minor && npm publish --access public
+      - name: Publish patch to npm
+        if: contains(github.event.head_commit.message, '[patch]')
+        run: cd packages/conventional-commits && npm version patch && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
