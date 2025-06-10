@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -32,10 +34,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Update package.json
+        env:
+          TOKEN: ${{ secrets.CI_TOKEN }}
         run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git commit -am "chore(release): publish new version [skip ci]"
-          git push origin main
-        env:
-            GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
+          git push origin HEAD:main
