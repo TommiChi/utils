@@ -1,6 +1,6 @@
 {
   "name": "@tcncode/conventional-commits",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "description": "Utility to facilitate the generation of conventional commits.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
