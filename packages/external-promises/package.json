@@ -1,0 +1,19 @@
+{
+  "name": "@tcncode/external-promises",
+  "version": "0.2.0",
+  "description": "Utility functions for working with external promises.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest src/index.test.ts --config jest.config.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
