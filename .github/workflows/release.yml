@@ -37,7 +37,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.CI_TOKEN }}
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/${{ github.repository }}.git
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git commit -am "chore(release): publish new version [skip ci]"
