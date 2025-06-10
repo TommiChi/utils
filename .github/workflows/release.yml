@@ -35,10 +35,10 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Update package.json
         env:
-          TOKEN: ${{ secrets.CI_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/${{ github.repository }}.git
           git config user.name "GitHub Actions"
-          git config user.email "<>"
-          git commit -am "chore(release): publish new version [skip ci]"
+          git config user.email "bot@github.com"
+          git add -A
+          git commit -m "chore(release): publish new version [skip ci]"
           git push origin HEAD:main
