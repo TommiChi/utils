@@ -11,10 +11,14 @@ jobs:
   publish-conventional-commits:
     if: github.ref == 'refs/heads/main' && contains(github.event.inputs.publish_type, 'conventional-commits-')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,4 +44,4 @@ jobs:
           git config user.name "GitHub Actions"
           git add -A
           git commit -m "chore(release): publish new version [skip ci]"
-          git push origin HEAD:main
+          git push origin HEAD:main --force
