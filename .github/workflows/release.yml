@@ -43,5 +43,5 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git add -A
-          git commit -m "chore(release): publish new version [skip ci]"
+          git commit -m "chore(release): publish new ${{ github.event.inputs.publish_type.split('_')[-1] }} version [skip ci]"
           git push origin HEAD:main --force
